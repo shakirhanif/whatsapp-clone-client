@@ -1,12 +1,15 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { personActions } from "../../../redux/person-actions";
+import { setConversation } from "../../../service/api";
 
 const Conversation = ({ user }) => {
   const dispatch = useDispatch();
-  const selectUser = () => {
+  const account = useSelector((state) => state.account.accountState);
+  const selectUser = async () => {
     dispatch(personActions.setPerson(user));
+    await setConversation({ senderId: account.sub, receiverId: user.sub });
   };
   return (
     <>
