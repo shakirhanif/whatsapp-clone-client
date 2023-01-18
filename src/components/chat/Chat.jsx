@@ -1,11 +1,11 @@
 import { Box, Dialog } from "@mui/material";
-import React, { useState } from "react";
 import Menu from "./menu/Menu";
 import EmptyChat from "./chat/EmptyChat";
 import ChatBox from "./chat/ChatBox";
+import { useSelector } from "react-redux";
 
 const Chat = () => {
-  const [selected, setSelected] = useState(true);
+  const person = useSelector((state) => state.person.personState);
   return (
     <Dialog
       open={true}
@@ -34,7 +34,7 @@ const Chat = () => {
             borderLeft: "solid 3px rgba(0,0,0,0.14)",
           }}
         >
-          {selected ? <ChatBox /> : <EmptyChat />}
+          {Object.keys(person).length ? <ChatBox /> : <EmptyChat />}
         </Box>
       </Box>
     </Dialog>

@@ -23,7 +23,7 @@ const Conversations = () => {
           (x) =>
             account.sub !== x.sub && (
               <>
-                <Conversation name={x.name} picture={x.picture} sub={x.sub} />
+                <Conversation user={x} />
                 <Divider sx={{ marginLeft: "98px" }} />
               </>
             )

@@ -1,10 +1,8 @@
 import { MoreVert, Search } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
 
-const ChatHeader = () => {
-  const account = useSelector((state) => state.account.accountState);
+const ChatHeader = ({ person }) => {
   return (
     <Box
       sx={{
@@ -17,7 +15,7 @@ const ChatHeader = () => {
       <Box sx={{ display: "flex" }}>
         <Box>
           <img
-            src={account.picture}
+            src={person.picture}
             alt="dp"
             style={{
               height: "50px",
@@ -31,9 +29,9 @@ const ChatHeader = () => {
           />
         </Box>
         <Box sx={{ marginLeft: "15px", marginTop: "7px" }}>
-          <Typography sx={{ fontWeight: "600" }}>{account.name}</Typography>
+          <Typography sx={{ fontWeight: "600" }}>{person.name}</Typography>
           <Typography sx={{ color: "grey", fontSize: "13px" }}>
-            Online Status
+            Offline
           </Typography>
         </Box>
       </Box>
