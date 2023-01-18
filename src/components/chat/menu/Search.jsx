@@ -2,8 +2,14 @@ import { Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import { InputBase } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { searchActions } from "../../../redux/search-actions";
 
 const Search = () => {
+  const dispatch = useDispatch();
+  const setSearchState = (e) => {
+    dispatch(searchActions.setSearch(e.target.value));
+  };
   return (
     <Box
       sx={{
@@ -42,6 +48,7 @@ const Search = () => {
             height: "30px",
             marginLeft: "30px",
           }}
+          onChange={setSearchState}
         />
       </Box>
     </Box>

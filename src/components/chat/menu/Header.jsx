@@ -8,7 +8,7 @@ import InfoDrawer from "../../drawer/InfoDrawer";
 
 const Header = () => {
   const account = useSelector((state) => state.account.accountState);
-  const [openDrawer, setOpenDrawer] = useState("false");
+  const [openDrawer, setOpenDrawer] = useState(false);
   const toggleDrawer = () => {
     setOpenDrawer(true);
   };

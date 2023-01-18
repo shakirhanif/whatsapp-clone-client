@@ -6,14 +6,18 @@ import { useSelector } from "react-redux";
 
 const Conversations = () => {
   const [users, setUsers] = useState([]);
+  const searchState = useSelector((state) => state.search.searchState);
   useEffect(() => {
     const myFunc = async () => {
       let response = await getUsers();
-      setUsers(response);
+      const filteredUsers = response.filter((x) =>
+        x.name.toLowerCase().includes(searchState.toLowerCase())
+      );
+      setUsers(filteredUsers);
     };
 
     myFunc();
-  }, []);
+  }, [searchState]);
   const account = useSelector((state) => state.account.accountState);
 
   return (
