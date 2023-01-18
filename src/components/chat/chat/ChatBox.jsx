@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import React from "react";
-import ChatFooter from "./ChatFooter";
 import ChatHeader from "./ChatHeader";
 import Messages from "./Messages";
 
@@ -9,7 +8,6 @@ const ChatBox = () => {
     <Box>
       <ChatHeader />
       <Messages />
-      <ChatFooter />
     </Box>
   );
 };

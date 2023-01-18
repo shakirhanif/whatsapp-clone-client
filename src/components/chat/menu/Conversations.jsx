@@ -18,7 +18,7 @@ const Conversations = () => {
 
   return (
     <>
-      <Box sx={{ height: "81vh", overflow: "overlay" }}>
+      <Box sx={{ height: "70vh", overflow: "auto" }}>
         {users.map(
           (x) =>
             account.sub !== x.sub && (
