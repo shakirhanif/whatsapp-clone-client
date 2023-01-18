@@ -16,8 +16,8 @@ const LoginDialogue = () => {
   const onSuccessLogin = async (res) => {
     const decoded = jwtDecode(res.credential);
     console.log(decoded);
-    await addUser(decoded);
     dispatch(accountActions.setAccount(decoded));
+    await addUser(decoded);
   };
   return (
     <Dialog
