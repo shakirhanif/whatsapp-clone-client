@@ -1,8 +1,12 @@
 import { AttachFile, EmojiEmotionsOutlined, Mic } from "@mui/icons-material";
 import { Box, InputBase } from "@mui/material";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { textActions } from "../../../redux/text-actions";
 
-const ChatFooter = () => {
+const ChatFooter = ({ sendText }) => {
+  const dispatch = useDispatch();
+  const text = useSelector((state) => state.text.textState);
   return (
     <Box
       sx={{
@@ -32,7 +36,10 @@ const ChatFooter = () => {
         <InputBase
           placeholder=" Type a message"
           sx={{ marginLeft: "10px", width: "100%", fontSize: "14px" }}
-        ></InputBase>
+          onChange={(e) => dispatch(textActions.setText(e.target.value))}
+          onKeyPress={sendText}
+          value={text}
+        />
       </Box>
       <Mic sx={{ marginLeft: "auto" }} />
     </Box>

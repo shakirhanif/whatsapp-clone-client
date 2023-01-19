@@ -13,7 +13,6 @@ export const addUser = async (data) => {
 export const getUsers = async () => {
   try {
     const response = await axios.get(`${url}/users`);
-    console.log(response.data);
     return response.data;
   } catch (err) {
     console.log("errors while getting users", err.messsage);
@@ -25,5 +24,22 @@ export const setConversation = async (data) => {
     await axios.post(`${url}/conversation/add`, data);
   } catch (error) {
     console.log("errors while getting setConversation Api", error.messsage);
+  }
+};
+
+export const getConversation = async (data) => {
+  try {
+    const response = await axios.post(`${url}/conversation/get`, data);
+    return response.data;
+  } catch (error) {
+    console.log("errors while getting getConversation Api", error.messsage);
+  }
+};
+
+export const newMessage = async (data) => {
+  try {
+    axios.post(`${url}/message/add`, data);
+  } catch (error) {
+    console.log("errors while getting newMessage Api", error.messsage);
   }
 };
