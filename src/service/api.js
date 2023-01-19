@@ -43,3 +43,12 @@ export const newMessage = async (data) => {
     console.log("errors while getting newMessage Api", error.messsage);
   }
 };
+
+export const getMessages = async (conversationId) => {
+  try {
+    let response = await axios.get(`${url}/message/get/${conversationId}`);
+    return response.data;
+  } catch (err) {
+    console.log("error while calling get message Api", err.message);
+  }
+};

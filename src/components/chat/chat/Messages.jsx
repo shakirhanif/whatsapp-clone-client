@@ -1,10 +1,12 @@
 import styled from "@emotion/styled";
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { textActions } from "../../../redux/text-actions";
-import { newMessage } from "../../../service/api";
+import { getMessages, newMessage } from "../../../service/api";
 import ChatFooter from "./ChatFooter";
+import Message from "./Message";
 
 const Wrapper = styled(Box)`
   background-image: url("/background.png");
@@ -28,9 +30,22 @@ const Messages = ({ conversation }) => {
       dispatch(textActions.setText(""));
     }
   };
+  const [messages, setMessages] = useState([]);
+  useEffect(() => {
+    const getMessagesDetail = async (conversationId) => {
+      const data = await getMessages(conversationId);
+      setMessages(data);
+    };
+    conversation._id && getMessagesDetail(conversation._id);
+  }, [person, conversation._id]);
   return (
     <Wrapper>
-      <Box sx={{ height: "73vh", overflowY: "scroll" }}></Box>
+      <Box sx={{ height: "73vh", overflowY: "scroll" }}>
+        {messages &&
+          messages.map((x) => {
+            return <Message message={x} />;
+          })}
+      </Box>
       <ChatFooter sendText={sendText} />
     </Wrapper>
   );
