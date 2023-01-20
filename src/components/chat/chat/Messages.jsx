@@ -11,10 +11,14 @@ import Message from "./Message";
 const Wrapper = styled(Box)`
   background-image: url("/background.png");
 `;
+const PaddingBox = styled(Box)`
+  padding: 3px 80px;
+`;
 const Messages = ({ conversation }) => {
   const account = useSelector((state) => state.account.accountState);
   const person = useSelector((state) => state.person.personState);
   const text = useSelector((state) => state.text.textState);
+  const [messageSentFlag, setMessageSentFlag] = useState(false);
   const dispatch = useDispatch();
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
@@ -28,6 +32,7 @@ const Messages = ({ conversation }) => {
       };
       await newMessage(message);
       dispatch(textActions.setText(""));
+      setMessageSentFlag((prev) => !prev);
     }
   };
   const [messages, setMessages] = useState([]);
@@ -37,13 +42,22 @@ const Messages = ({ conversation }) => {
       setMessages(data);
     };
     conversation._id && getMessagesDetail(conversation._id);
-  }, [person, conversation._id]);
+  }, [person, conversation._id, messageSentFlag]);
   return (
     <Wrapper>
-      <Box sx={{ height: "73vh", overflowY: "scroll" }}>
+      <Box
+        sx={{
+          height: "73vh",
+          overflowY: "scroll",
+        }}
+      >
         {messages &&
           messages.map((x) => {
-            return <Message message={x} />;
+            return (
+              <PaddingBox>
+                <Message message={x} />
+              </PaddingBox>
+            );
           })}
       </Box>
       <ChatFooter sendText={sendText} />
