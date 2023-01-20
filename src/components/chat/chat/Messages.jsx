@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Box } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { textActions } from "../../../redux/text-actions";
@@ -36,12 +36,19 @@ const Messages = ({ conversation }) => {
     }
   };
   const [messages, setMessages] = useState([]);
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behaviour: "smooth" });
+  };
   useEffect(() => {
     const getMessagesDetail = async (conversationId) => {
       const data = await getMessages(conversationId);
       setMessages(data);
     };
     conversation._id && getMessagesDetail(conversation._id);
+    setTimeout(() => {
+      scrollToBottom();
+    }, 100);
   }, [person, conversation._id, messageSentFlag]);
   return (
     <Wrapper>
@@ -59,6 +66,7 @@ const Messages = ({ conversation }) => {
               </PaddingBox>
             );
           })}
+        <div ref={messagesEndRef} />
       </Box>
       <ChatFooter sendText={sendText} />
     </Wrapper>
