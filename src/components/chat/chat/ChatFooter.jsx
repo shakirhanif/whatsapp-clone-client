@@ -1,12 +1,28 @@
 import { AttachFile, EmojiEmotionsOutlined, Mic } from "@mui/icons-material";
 import { Box, InputBase } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { textActions } from "../../../redux/text-actions";
+import { uploadFile } from "../../../service/api";
 
-const ChatFooter = ({ sendText }) => {
+const ChatFooter = ({ sendText, file, setFile }) => {
   const dispatch = useDispatch();
   const text = useSelector((state) => state.text.textState);
+  const onFileChange = (e) => {
+    setFile(e.target.files[0]);
+    dispatch(textActions.setText(e.target.files[0].name));
+  };
+  useEffect(() => {
+    const getImage = async (file) => {
+      if (file) {
+        const data = new FormData();
+        data.append("name", file.name);
+        data.append("file", file);
+        await uploadFile(data);
+      }
+    };
+    getImage(file);
+  }, [file]);
   return (
     <Box
       sx={{
@@ -23,7 +39,15 @@ const ChatFooter = ({ sendText }) => {
       }}
     >
       <EmojiEmotionsOutlined />
-      <AttachFile sx={{ transform: "rotate(40deg)" }} />
+      <label htmlFor="fileinput">
+        <AttachFile sx={{ transform: "rotate(40deg)", cursor: "pointer" }} />
+      </label>
+      <input
+        type="file"
+        style={{ display: "none" }}
+        id="fileinput"
+        onChange={(e) => onFileChange(e)}
+      />
       <Box
         sx={{
           background: "#fff",

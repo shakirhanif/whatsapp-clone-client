@@ -18,6 +18,7 @@ const Messages = ({ conversation }) => {
   const account = useSelector((state) => state.account.accountState);
   const person = useSelector((state) => state.person.personState);
   const text = useSelector((state) => state.text.textState);
+  const [file, setFile] = useState();
   const [messageSentFlag, setMessageSentFlag] = useState(false);
   const dispatch = useDispatch();
   const sendText = async (e) => {
@@ -59,16 +60,16 @@ const Messages = ({ conversation }) => {
         }}
       >
         {messages &&
-          messages.map((x) => {
+          messages.map((x, index) => {
             return (
               <PaddingBox>
-                <Message message={x} />
+                <Message message={x} key={index} />
               </PaddingBox>
             );
           })}
         <div ref={messagesEndRef} />
       </Box>
-      <ChatFooter sendText={sendText} />
+      <ChatFooter sendText={sendText} file={file} setFile={setFile} />
     </Wrapper>
   );
 };

@@ -52,3 +52,11 @@ export const getMessages = async (conversationId) => {
     console.log("error while calling get message Api", err.message);
   }
 };
+
+export const uploadFile = async (data) => {
+  try {
+    return await axios.post(`${url}/file/upload`, data);
+  } catch (error) {
+    console.log("error while posting upload file Api", error.message);
+  }
+};
