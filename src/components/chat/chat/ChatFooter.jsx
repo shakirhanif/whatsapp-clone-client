@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { textActions } from "../../../redux/text-actions";
 import { uploadFile } from "../../../service/api";
 
-const ChatFooter = ({ sendText, file, setFile }) => {
+const ChatFooter = ({ sendText, file, setFile, setImage }) => {
   const dispatch = useDispatch();
   const text = useSelector((state) => state.text.textState);
   const onFileChange = (e) => {
@@ -18,7 +18,8 @@ const ChatFooter = ({ sendText, file, setFile }) => {
         const data = new FormData();
         data.append("name", file.name);
         data.append("file", file);
-        await uploadFile(data);
+        let response = await uploadFile(data);
+        setImage(response.data);
       }
     };
     getImage(file);

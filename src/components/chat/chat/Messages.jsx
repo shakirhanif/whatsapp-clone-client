@@ -20,19 +20,33 @@ const Messages = ({ conversation }) => {
   const text = useSelector((state) => state.text.textState);
   const [file, setFile] = useState();
   const [messageSentFlag, setMessageSentFlag] = useState(false);
+  const [image, setImage] = useState("");
   const dispatch = useDispatch();
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
     if (code === 13) {
-      let message = {
-        senderId: account.sub,
-        receiverId: person.sub,
-        conversationId: conversation._id,
-        type: "text",
-        text: text,
-      };
+      let message = {};
+      if (!file) {
+        message = {
+          senderId: account.sub,
+          receiverId: person.sub,
+          conversationId: conversation._id,
+          type: "text",
+          text: text,
+        };
+      } else {
+        message = {
+          senderId: account.sub,
+          receiverId: person.sub,
+          conversationId: conversation._id,
+          type: "file",
+          text: image,
+        };
+      }
       await newMessage(message);
       dispatch(textActions.setText(""));
+      setFile("");
+      setImage("");
       setMessageSentFlag((prev) => !prev);
     }
   };
@@ -69,7 +83,12 @@ const Messages = ({ conversation }) => {
           })}
         <div ref={messagesEndRef} />
       </Box>
-      <ChatFooter sendText={sendText} file={file} setFile={setFile} />
+      <ChatFooter
+        sendText={sendText}
+        file={file}
+        setFile={setFile}
+        setImage={setImage}
+      />
     </Wrapper>
   );
 };
