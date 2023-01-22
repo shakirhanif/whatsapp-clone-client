@@ -3,6 +3,8 @@ import { getUsers } from "../../../service/api";
 import { Box, Divider } from "@mui/material";
 import Conversation from "./Conversation";
 import { useSelector } from "react-redux";
+import { useContext } from "react";
+import { SocketContext } from "../../../context/SocketProvider";
 
 const Conversations = () => {
   const [users, setUsers] = useState([]);
@@ -18,8 +20,11 @@ const Conversations = () => {
 
     myFunc();
   }, [searchState]);
+  const { socket } = useContext(SocketContext);
   const account = useSelector((state) => state.account.accountState);
-
+  useEffect(() => {
+    socket.current.emit("addUser", account);
+  }, []);
   return (
     <>
       <Box sx={{ height: "70vh", overflow: "auto" }}>

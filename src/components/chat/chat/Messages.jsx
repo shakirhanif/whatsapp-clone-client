@@ -21,6 +21,7 @@ const Messages = ({ conversation }) => {
   const [file, setFile] = useState();
   const [messageSentFlag, setMessageSentFlag] = useState(false);
   const [image, setImage] = useState("");
+  const scrollRef = useRef();
   const dispatch = useDispatch();
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
@@ -51,20 +52,17 @@ const Messages = ({ conversation }) => {
     }
   };
   const [messages, setMessages] = useState([]);
-  const messagesEndRef = useRef(null);
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behaviour: "smooth" });
-  };
+
   useEffect(() => {
     const getMessagesDetail = async (conversationId) => {
       const data = await getMessages(conversationId);
       setMessages(data);
     };
     conversation._id && getMessagesDetail(conversation._id);
-    setTimeout(() => {
-      scrollToBottom();
-    }, 100);
   }, [person, conversation._id, messageSentFlag]);
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ transition: "smooth" });
+  }, [messages]);
   return (
     <Wrapper>
       <Box
@@ -76,12 +74,11 @@ const Messages = ({ conversation }) => {
         {messages &&
           messages.map((x, index) => {
             return (
-              <PaddingBox>
+              <PaddingBox ref={scrollRef}>
                 <Message message={x} key={index} />
               </PaddingBox>
             );
           })}
-        <div ref={messagesEndRef} />
       </Box>
       <ChatFooter
         sendText={sendText}
