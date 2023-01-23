@@ -21,11 +21,11 @@ const Messages = ({ conversation }) => {
   const person = useSelector((state) => state.person.personState);
   const text = useSelector((state) => state.text.textState);
   const [file, setFile] = useState();
-  const [messageSentFlag, setMessageSentFlag] = useState(false);
   const [image, setImage] = useState("");
   const scrollRef = useRef();
   const dispatch = useDispatch();
-  const { socket } = useContext(SocketContext);
+  const { socket, messageSentFlag, setMessageSentFlag } =
+    useContext(SocketContext);
   const [incommingMessage, setIncommingMessage] = useState(null);
   useEffect(() => {
     socket.current.on("getMessage", (data) => {

@@ -6,12 +6,21 @@ export const SocketContext = createContext(null);
 
 const SocketProvider = ({ children }) => {
   const [activeUsers, setActiveUsers] = useState([]);
+  const [messageSentFlag, setMessageSentFlag] = useState(false);
   const socket = useRef();
   useEffect(() => {
     socket.current = io("ws://localhost:4000");
   }, []);
   return (
-    <SocketContext.Provider value={{ socket, activeUsers, setActiveUsers }}>
+    <SocketContext.Provider
+      value={{
+        socket,
+        activeUsers,
+        setActiveUsers,
+        messageSentFlag,
+        setMessageSentFlag,
+      }}
+    >
       {children}
     </SocketContext.Provider>
   );
