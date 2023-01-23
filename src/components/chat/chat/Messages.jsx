@@ -7,6 +7,8 @@ import { textActions } from "../../../redux/text-actions";
 import { getMessages, newMessage } from "../../../service/api";
 import ChatFooter from "./ChatFooter";
 import Message from "./Message";
+import { useContext } from "react";
+import { SocketContext } from "../../../context/SocketProvider";
 
 const Wrapper = styled(Box)`
   background-image: url("/background.png");
@@ -23,6 +25,17 @@ const Messages = ({ conversation }) => {
   const [image, setImage] = useState("");
   const scrollRef = useRef();
   const dispatch = useDispatch();
+  const { socket } = useContext(SocketContext);
+  const [incommingMessage, setIncommingMessage] = useState(null);
+  useEffect(() => {
+    socket.current.on("getMessage", (data) => {
+      setIncommingMessage({
+        ...data,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
+
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
     if (code === 13) {
@@ -44,6 +57,7 @@ const Messages = ({ conversation }) => {
           text: image,
         };
       }
+      socket.current.emit("sendMessage", message);
       await newMessage(message);
       dispatch(textActions.setText(""));
       setFile("");
@@ -63,6 +77,11 @@ const Messages = ({ conversation }) => {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ transition: "smooth" });
   }, [messages]);
+  useEffect(() => {
+    incommingMessage &&
+      conversation?.members?.includes(incommingMessage.senderId) &&
+      setMessages((prev) => [...prev, incommingMessage]);
+  }, [incommingMessage, conversation]);
   return (
     <Wrapper>
       <Box

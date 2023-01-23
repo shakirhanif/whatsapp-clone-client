@@ -20,11 +20,14 @@ const Conversations = () => {
 
     myFunc();
   }, [searchState]);
-  const { socket } = useContext(SocketContext);
+  const { socket, setActiveUsers } = useContext(SocketContext);
   const account = useSelector((state) => state.account.accountState);
   useEffect(() => {
     socket.current.emit("addUser", account);
-  }, []);
+    socket.current.on("getUsers", (users) => {
+      setActiveUsers(users);
+    });
+  }, [account]);
   return (
     <>
       <Box sx={{ height: "70vh", overflow: "auto" }}>

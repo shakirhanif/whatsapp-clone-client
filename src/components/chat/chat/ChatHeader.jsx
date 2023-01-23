@@ -1,8 +1,11 @@
 import { MoreVert, Search } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 import React from "react";
+import { useContext } from "react";
+import { SocketContext } from "../../../context/SocketProvider";
 
 const ChatHeader = ({ person }) => {
+  const { activeUsers } = useContext(SocketContext);
   return (
     <Box
       sx={{
@@ -31,7 +34,9 @@ const ChatHeader = ({ person }) => {
         <Box sx={{ marginLeft: "15px", marginTop: "7px" }}>
           <Typography sx={{ fontWeight: "600" }}>{person.name}</Typography>
           <Typography sx={{ color: "grey", fontSize: "13px" }}>
-            Offline
+            {activeUsers?.find((user) => user.sub === person.sub)
+              ? "online"
+              : "offline"}
           </Typography>
         </Box>
       </Box>
