@@ -9,7 +9,7 @@ const SocketProvider = ({ children }) => {
   const [messageSentFlag, setMessageSentFlag] = useState(false);
   const socket = useRef();
   useEffect(() => {
-    socket.current = io("ws://localhost:4000");
+    socket.current = io(process.env.REACT_APP_SOCKET_LINK);
   }, []);
   return (
     <SocketContext.Provider
